@@ -32,6 +32,11 @@ functions:
     events:
       - websocket:
           route: $disconnect
+  sendmessage:
+    handler: sendmessage/app.handler
+    events:
+      - websocket:
+          route: sendmessage
 
 resources:
   Resources:
