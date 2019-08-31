@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 const DDB = new AWS.DynamoDB({ apiVersion: "2012-10-08" });
 
-module.exports.connect = (event,context,callback) => {
+exports.handler = (event,context,callback) => {
     const putParams = {
         TableName: process.env.TABLE_NAME,
         Item: {

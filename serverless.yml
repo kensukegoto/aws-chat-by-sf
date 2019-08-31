@@ -18,30 +18,20 @@ provider:
   environment:
     TABLE_NAME:
       Ref: ChatConnectionsTable
-  websocketApiName: ${self:service.name}-${self:provider.stage}
-  websocketApiRouteSelectionExpression: $request.body.action
+  websocketsApiName: ${self:service.name}-${self:provider.stage}
+  websocketsApiRouteSelectionExpression: $request.body.message
 
 functions:
   connect:
-    handler: handler.connect
+    handler: connect/app.handler
     events:
       - websocket:
-          routeKey: $connect
+          route: $connect
   disconnect:
-    handler: handler.disconnect
+    handler: disconnect/app.handler
     events:
       - websocket:
-          routeKey: $disconnect
-  defaultMessage:
-    handler: handler.defaultMessage
-    events:
-      - websocket:
-          routeKey: $default
-  sendMessage:
-    handler: handler.sendMessage
-    events:
-      - websocket:
-          routeKey: sendMessage
+          route: $disconnect
 
 resources:
   Resources:
@@ -50,10 +40,10 @@ resources:
       Properties:
         TableName: ${self:service.name}-connections-${self:provider.stage}
         AttributeDefinitions:
-          - AttributeName: ConnectionId
+          - AttributeName: connectionId
             AttributeType: S
         KeySchema:
-          - AttributeName: ConnectionId
+          - AttributeName: connectionId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
