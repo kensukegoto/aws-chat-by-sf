@@ -3,8 +3,8 @@ service:
 
 provider:
   name: aws
-  stage: dev
-  region: ap-northeast-1
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-northeast-1'}
   runtime: nodejs10.x
   iamRoleStatements:
     - Effect: Allow
@@ -20,17 +20,17 @@ provider:
 
 functions:
   connect:
-    handler: handler.onconnect
+    handler: onconnect/app.handler
     events:
       - websocket:
           route: $connect
   disconnect:
-    handler: handler.ondisconnect
+    handler: ondisconnect/app.handler
     events:
       - websocket:
           route: $disconnect
   sendmessage:
-    handler: handler.sendmessage
+    handler: sendmessage/app.handler
     events:
       - websocket:
           route: sendmessage
